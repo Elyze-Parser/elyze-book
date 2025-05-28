@@ -28,7 +28,10 @@ pub trait Match<T> {
     /// 
     /// (true, index) if the data matches the pattern,
     /// (false, index) otherwise
-    fn matcher(&self, data: &[T]) -> (bool, usize);
+    fn is_matching(&self, data: &[T]) -> (bool, usize);
+
+    /// Returns the size of the data to match.
+    fn size(&self) -> usize;
 }
 ```
 
@@ -42,41 +45,19 @@ To come back to our example, we can create a struct that implements the `Match` 
 ```rust
 # extern crate elyze;
 use elyze::matcher::Match;
+
+// define a structure to implement the `Match` trait
 struct Hello;
+
+// implement the `Match` trait
 impl Match<u8> for Hello {
-    fn matcher(&self, data: &[u8]) -> (bool, usize) {
-        (data == b"hello", 5)
+    fn is_matching(&self, data: &[u8]) -> (bool, usize) {
+        // define the pattern to match
+        let pattern = b"hello";
+        // check if the subslice of data matches the pattern
+        (&data[..pattern.len()] == pattern, pattern.len())
     }
-}
 
-fn main() {
-    let hello = Hello;
-    assert_eq!(hello.matcher(b"hello"), (true, 5));
-    assert_eq!(hello.matcher(b"world"), (false, 5));
-}
-```
-
-## The `MatchSize` trait
-
-Because the `Match` trait is generic over the type of the data it matches, it's sometimes necessary to know the 
-size of the data to match.
-
-To do this, Elyze defines a `MatchSize` trait.
-
-```rust
-pub trait MatchSize<T> {
-    /// Returns the size of the data to match.
-    fn size(&self) -> usize;
-}
-```
-
-This trait is separated from the `Match` trait because some Elyze concepts only need the size but not the matching behavior.
-
-```rust
-# extern crate elyze;
-use elyze::matcher::MatchSize;
-struct Hello;
-impl MatchSize<u8> for Hello {
     fn size(&self) -> usize {
         5
     }
@@ -84,6 +65,7 @@ impl MatchSize<u8> for Hello {
 
 fn main() {
     let hello = Hello;
-    assert_eq!(hello.size(), 5);
+    assert_eq!(hello.matcher(b"hello world"), (true, hello.size()));
+    assert_eq!(hello.matcher(b"world is beautiful"), (false, 5));
 }
 ```
