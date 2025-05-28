@@ -1,0 +1,5 @@
+[book]
+authors = ["Yannick Guern"]
+language = "en"
+src = "src"
+title = "Elyze Book"
