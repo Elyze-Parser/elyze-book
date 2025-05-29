@@ -6,6 +6,7 @@
 
 # Basic concepts
 
+- [Basic concepts](./concepts/concepts.md)
 - [Scanner](./concepts/scanner.md)
 - [Matching](./concepts/matching.md)
 - [Error handling](./concepts/errors.md)
