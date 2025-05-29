@@ -12,6 +12,7 @@
 - [Error handling](./concepts/errors.md)
 - [Recognizing](./concepts/recognizing.md)
 - [Visitor](./concepts/visitor.md)
+- [Peeking](./concepts/peeking.md)
 
 ---
 
