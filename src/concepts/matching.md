@@ -38,7 +38,7 @@ pub trait Match<T> {
 The matcher method returns a tuple `(found, index)` where `found` is a boolean and `index` is the number of 
 characters matched.
 
-Like the [Scanner](./concepts/scanner.md) trait, the `Match` trait is generic over the type of the data it matches.
+Like the [Scanner](scanner.html) trait, the `Match` trait is generic over the type of the data it matches.
 
 To come back to our example, we can create a struct that implements the `Match` trait for the substring `hello`.
 
