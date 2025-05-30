@@ -20,3 +20,4 @@
 - [Components](./components/components.md)
 - [Tokens](./components/tokens.md)
 - [Recognizer](./components/recognizer.md)
+- [Acceptor](./components/acceptor.md)
