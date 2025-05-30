@@ -80,3 +80,64 @@ fn main() {
     println!("{:?}", result); // Ok(HelloWorld)
 }
 ```
+
+## Accept from Recognizable
+
+If your `Recognizable` data implements the `Default` trait, you automatically get a `Visitor` implementation.
+
+This is done by another blanket implementation.
+
+```rust
+# extern crate elyze;
+/// Allow a `Recognizable` to be used as a `Visitor`.
+///
+/// # Type Parameters
+///
+/// * `T` - The type of the data to scan.
+/// * `'a` - The lifetime of the data to scan.
+/// * `'b` - The lifetime of the `Scanner`.
+///
+impl<'a, T, R: Recognizable<'a, T, R> + Default> Visitor<'a, T> for R {
+    fn accept(scanner: &mut Scanner<'a, T>) -> ParseResult<Self> {
+        recognize(R::default(), scanner)?;
+        Ok(R::default())
+    }
+}
+```
+
+This makes the conversion from `Recognizable` and `Visitor` world trivial.
+
+```rust
+# extern crate elyze;
+
+#[derive(Default)]
+struct Hello; // implement `Match` and `Default`
+
+#[derive(Default)]
+struct Space; // implement `Match` and `Default`
+
+#[derive(Default)]
+struct World; // implement `Match` and `Default`
+
+impl<'a> Visitor<'a, u8> for HelloWorld {
+    fn accept(scanner: &mut Scanner<'a, u8>) -> ParseResult<Self> {
+        Hello::accept(scanner)?; // accept the word "hello"
+        Space::accept(scanner)?; // accept the space character?; // recognize the space character
+        World::accept(scanner)?; // accept the word "world"?; // recognize the word "world"
+        // return the `HelloWorld` object
+        Ok(HelloWorld)
+    }
+}
+
+fn main() {
+    let data = b"hello world";
+    let mut scanner = elyze::scanner::Scanner::new(data);
+    let result = HelloWorld::accept(&mut scanner);
+    println!("{:?}", result); // Ok(HelloWorld)
+}
+```
+
+One of the major differences between the `Visitor` and the `Recognizable` is the fact that the `Visitor` can call other 
+`Visitor` objects.
+
+This allows creating more complex parsing trees and thus more complex parsers.
