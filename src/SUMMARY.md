@@ -21,3 +21,4 @@
 - [Tokens](./components/tokens.md)
 - [Recognizer](./components/recognizer.md)
 - [Acceptor](./components/acceptor.md)
+- [Peeker](./components/peeker.md)
