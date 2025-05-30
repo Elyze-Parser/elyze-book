@@ -7,3 +7,4 @@ This part of the book will explain the basic concepts of the parser framework.
 - [Error handling](./concepts/errors.md) : Error handling
 - [Recognizing](./concepts/recognizing.md) : Recognizing data on matching patterns
 - [Visitor](./concepts/visitor.md) : The visitor pattern and the concept of accepting scanner data
+- [Peeking](./concepts/peeking.md) : Looking ahead in the data to find a pattern

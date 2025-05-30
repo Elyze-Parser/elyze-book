@@ -17,4 +17,6 @@
 ---
 
 # Components
+- [Components](./components/components.md)
 - [Tokens](./components/tokens.md)
+- [Recognizer](./components/recognizer.md)
