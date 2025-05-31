@@ -22,4 +22,6 @@
 - [Recognizer](./components/recognizer.md)
 - [Acceptor](./components/acceptor.md)
 - [Peeker](./components/peeker.md)
+- [Until](./components/until.md)
+- [Last](./components/last.md)
 - [Separated List](./components/separated_list.md)
