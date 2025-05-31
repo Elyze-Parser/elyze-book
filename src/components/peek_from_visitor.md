@@ -1,9 +1,21 @@
-# Until
+# Peek from Visitor
 
-Because getting the first "something" is a common pattern. Elyze provides a `Until` struct already implementing
-the `Peekable` trait.
+It may be interesting to be able to peek from a Visitor.
 
-The `Until` takes any `V` which respects `V: Visitor<'a, T> + Default`.
+You can implement by yourself the `Peekable` trait, or you can let Elyze do it for you.
+
+We just need to say to Elyze that we want it to implement the Peekable trait using the Visitor pattern.
+
+```rust
+# extern crate elyze;
+use elyze::peek::{DefaultPeekableImplementation, PeekableImplementation};
+
+impl PeekableImplementation for CloseParentheses {
+    type Type = DefaultPeekableImplementation;
+}
+```
+
+This will automatically enable the Peekable trait for CloseParentheses.
 
 ```rust
 # extern crate elyze;
@@ -32,17 +44,22 @@ impl Match<u8> for CloseParentheses {
     }
 }
 
+/// Active the Default implementation of Peekable for CloseParentheses
+impl PeekableImplementation for CloseParentheses {
+    type Type = DefaultPeekableImplementation;
+}
+
 fn main() -> ParseResult<()> {
     let data = b"( 7 * ( 1 + 2 ) )";
     let mut scanner = Scanner::new(data);
     scanner.bump_by(7); // consumes : ( 7 * (
     
-    // use the Until to peek the first ")"
-    let result = peek(Until::new(CloseParentheses), &scanner)?;
+    // peek the first ")"
+    let result = peek(CloseParentheses, &scanner)?;
     if let Some(peeking) = result {
         println!(
             "{:?}",
-            // the peek_slice method returns the slice of recognized without the end element
+            // the peek_slice method returns the slice of recognized data without the end element
             String::from_utf8_lossy(peeking.peeked_slice()) // 1 + 2
         );
     } else {

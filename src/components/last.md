@@ -1,21 +1,15 @@
 # Last
 
-Works as [Until](until.html), but returns the last element instead of the first one.
+If you want the last element peekable in the data, you can use the `Last` modifier.
 
-Because peeking the last element is harder than taking the first one, we need to give more insight to Elyze to make it work. 
+The `Last` modifier takes a `Peekable` as argument. So it may be a `Visitor`.
 
-Not that much. We just need to say to Elyze that we want it to implement the Peekable trait using the Visitor pattern.
+The code remains the same. But the behavior is different.
 
-```rust
-# extern crate elyze;
-use elyze::peek::{DefaultPeekableImplementation, PeekableImplementation};
+Instead of returning at the first peeked element, it will advance an internal scanner and re-apply the peek operation 
+until reaching the end of the data.
 
-impl PeekableImplementation for CloseParentheses {
-    type Type = DefaultPeekableImplementation;
-}
-```
-
-This will automatically enable the Peekable trait for CloseParentheses.
+The last element peeked is returned.
 
 ```rust
 # extern crate elyze;
